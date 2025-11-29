@@ -58,6 +58,24 @@
             z-index: 100;
         }
 
+        .desktop-text {
+            display: block;
+        }
+
+        .mobile-text {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .desktop-text {
+                display: none;
+            }
+
+            .mobile-text {
+                display: block;
+            }
+        }
+
         .links a {
             color: #000000;
             text-decoration: none;
@@ -136,10 +154,14 @@
 <body>
     <canvas id="drawCanvas"></canvas>
     <div class="container">
-        <div class="main-text">Luke
+        <div class="main-text"><span class="desktop-text">Luke
 Godward
 Product design
-lead</div>
+lead</span><span class="mobile-text">Luke
+Godward
+Product
+design
+lead</span></div>
 
         <div class="company-text"><span class="company-prefix">at
 </span><a href="https://44pixels.ai/" target="_blank">44pixels</a></div>
