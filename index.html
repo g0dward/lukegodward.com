@@ -69,6 +69,20 @@
             display: none;
         }
 
+        @media (min-width: 1920px) {
+            .main-text {
+                font-size: clamp(8rem, 24vw, 20rem);
+            }
+
+            .company-text {
+                font-size: clamp(8rem, 24vw, 20rem);
+            }
+
+            .links {
+                font-size: clamp(4rem, 12vw, 10rem);
+            }
+        }
+
         @media (max-width: 768px) {
             .desktop-text {
                 display: none;
@@ -249,8 +263,11 @@ lead</span></div>
         let lastX = 0;
         let lastY = 0;
 
+        // Set line width based on screen size
+        const lineWidth = window.innerWidth >= 1920 ? 32 : 16;
+
         ctx.strokeStyle = 'white';
-        ctx.lineWidth = 16;
+        ctx.lineWidth = lineWidth;
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
 
