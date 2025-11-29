@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luke Godward - Product Design Lead</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #7c5dff;
+            color: #000000;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-weight: 900;
+            line-height: 0;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            transition: background-color 0.25s ease;
+        }
+
+        .container {
+            position: relative;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .main-text {
+            position: absolute;
+            font-size: clamp(4.5rem, 10vw, 10rem);
+            line-height: 0.9;
+            white-space: pre;
+            left: 1rem;
+            bottom: calc(1rem + 0.9em);
+        }
+
+        .company-text {
+            position: absolute;
+            font-size: clamp(4.5rem, 10vw, 10rem);
+            line-height: 0.9;
+            text-align: right;
+            white-space: pre;
+            bottom: 1rem;
+            right: 1rem;
+        }
+
+        .links {
+            position: fixed;
+            right: 1rem;
+            top: 1rem;
+            font-size: clamp(2.25rem, 5vw, 5rem);
+            line-height: 1;
+            text-align: right;
+            z-index: 100;
+        }
+
+        .links a {
+            color: #000000;
+            text-decoration: none;
+            display: block;
+            transform-origin: top right;
+            transition: margin-top 0.15s ease-out;
+        }
+
+        .links a:not(:hover) {
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease, margin-top 0.15s ease-out;
+        }
+
+        .links a:hover {
+            animation: shake 1.5s ease-in-out forwards;
+            color: white;
+        }
+
+        .links a:first-child:hover + a {
+            margin-top: 1em;
+        }
+
+        .company-text a {
+            pointer-events: auto;
+            position: relative;
+            z-index: 101;
+            display: inline-block;
+            transform-origin: bottom right;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .company-text a:not(:hover) {
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease;
+        }
+
+        .company-text a:hover {
+            animation: shake 1.5s ease-in-out forwards;
+            color: white !important;
+        }
+
+        @keyframes shake {
+            0% { transform: scale(1) rotate(0deg); }
+            10% { transform: scale(2) rotate(-2deg); }
+            20% { transform: scale(2) rotate(2deg); }
+            30% { transform: scale(2) rotate(-2deg); }
+            40% { transform: scale(2) rotate(2deg); }
+            50% { transform: scale(2) rotate(-2deg); }
+            60% { transform: scale(2) rotate(2deg); }
+            70% { transform: scale(2) rotate(-1deg); }
+            80% { transform: scale(2) rotate(1deg); }
+            90% { transform: scale(2) rotate(0deg); }
+            100% { transform: scale(2) rotate(0deg); }
+        }
+
+        #drawCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            cursor: url('images/cursor-large.svg'), auto;
+        }
+
+        .container {
+            cursor: url('images/cursor-large.svg'), auto;
+        }
+
+        .links a, .company-text a {
+            cursor: url('images/pointinghand-large.svg'), pointer;
+        }
+
+    </style>
+</head>
+<body>
+    <canvas id="drawCanvas"></canvas>
+    <div class="container">
+        <div class="main-text">Luke
+Godward
+Product design
+lead</div>
+
+        <div class="company-text"><span class="company-prefix">at
+</span><a href="https://44pixels.ai/" target="_blank">44pixels</a></div>
+
+        <div class="links">
+            <a href="mailto:lukegodward@gmail.com">Email</a>
+            <a href="https://www.linkedin.com/in/luke-godward/" target="_blank">LinkedIn</a>
+        </div>
+    </div>
+
+    <script>
+        // Background color animation
+        let currentHue = Math.random() * 360;
+
+        function hslToHex(h, s, l) {
+            s /= 100;
+            l /= 100;
+            const c = (1 - Math.abs(2 * l - 1)) * s;
+            const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+            const m = l - c/2;
+            let r = 0, g = 0, b = 0;
+
+            if (0 <= h && h < 60) {
+                r = c; g = x; b = 0;
+            } else if (60 <= h && h < 120) {
+                r = x; g = c; b = 0;
+            } else if (120 <= h && h < 180) {
+                r = 0; g = c; b = x;
+            } else if (180 <= h && h < 240) {
+                r = 0; g = x; b = c;
+            } else if (240 <= h && h < 300) {
+                r = x; g = 0; b = c;
+            } else if (300 <= h && h < 360) {
+                r = c; g = 0; b = x;
+            }
+
+            const toHex = (val) => {
+                const hex = Math.round((val + m) * 255).toString(16);
+                return hex.length === 1 ? '0' + hex : hex;
+            };
+
+            return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+        }
+
+        function updateBackgroundColor() {
+            // Saturation and Lightness set to 100% (HSL: 100%, 50% for full brightness)
+            const color = hslToHex(currentHue, 100, 50);
+            document.body.style.backgroundColor = color;
+
+            // Increment hue by a larger amount for faster change
+            currentHue = (currentHue + 2) % 360;
+        }
+
+        // Update color every 250ms
+        setInterval(updateBackgroundColor, 250);
+        updateBackgroundColor();
+
+        const canvas = document.getElementById('drawCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas size to window size
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 16;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        function startDrawing(e) {
+            isDrawing = true;
+            const rect = canvas.getBoundingClientRect();
+            lastX = e.clientX - rect.left;
+            lastY = e.clientY - rect.top;
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const currentX = e.clientX - rect.left;
+            const currentY = e.clientY - rect.top;
+
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(currentX, currentY);
+            ctx.stroke();
+
+            lastX = currentX;
+            lastY = currentY;
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        // Mouse events
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+
+        // Touch events for mobile
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent('mousedown', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        });
+
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent('mousemove', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        });
+
+        canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            const mouseEvent = new MouseEvent('mouseup', {});
+            canvas.dispatchEvent(mouseEvent);
+        });
+
+        // Re-enable pointer events on canvas for drawing
+        canvas.style.pointerEvents = 'auto';
+    </script>
+</body>
+</html>
