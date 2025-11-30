@@ -35,15 +35,14 @@
         }
 
         body {
-            background-color: #7c5dff;
-            color: #000000;
-            font-family: system-ui, -apple-system, sans-serif;
-            font-weight: 900;
+            background-color: #0000FF;
+            color: #ffffff;
+            font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+            font-weight: bold;
             line-height: 0;
             overflow: hidden;
             height: 100vh;
             width: 100vw;
-            transition: background-color 0.25s ease;
         }
 
         .container {
@@ -129,7 +128,7 @@
         }
 
         .links a {
-            color: #000000;
+            color: #ffffff;
             text-decoration: none;
             display: block;
             transform-origin: top right;
@@ -166,6 +165,15 @@
         .company-text a:hover {
             animation: shake 1.5s ease-in-out forwards;
             color: white !important;
+        }
+
+        .company-prefix {
+            display: inline-block;
+            transition: transform 0.15s ease-out;
+        }
+
+        .company-text:has(a:hover) .company-prefix {
+            transform: translateY(calc(-1em + 16px));
         }
 
         @keyframes shake {
@@ -225,52 +233,6 @@ lead</span></div>
     </div>
 
     <script>
-        // Background color animation
-        let currentHue = Math.random() * 360;
-
-        function hslToHex(h, s, l) {
-            s /= 100;
-            l /= 100;
-            const c = (1 - Math.abs(2 * l - 1)) * s;
-            const x = c * (1 - Math.abs((h / 60) % 2 - 1));
-            const m = l - c/2;
-            let r = 0, g = 0, b = 0;
-
-            if (0 <= h && h < 60) {
-                r = c; g = x; b = 0;
-            } else if (60 <= h && h < 120) {
-                r = x; g = c; b = 0;
-            } else if (120 <= h && h < 180) {
-                r = 0; g = c; b = x;
-            } else if (180 <= h && h < 240) {
-                r = 0; g = x; b = c;
-            } else if (240 <= h && h < 300) {
-                r = x; g = 0; b = c;
-            } else if (300 <= h && h < 360) {
-                r = c; g = 0; b = x;
-            }
-
-            const toHex = (val) => {
-                const hex = Math.round((val + m) * 255).toString(16);
-                return hex.length === 1 ? '0' + hex : hex;
-            };
-
-            return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
-        }
-
-        function updateBackgroundColor() {
-            // Saturation and Lightness set to 100% (HSL: 100%, 50% for full brightness)
-            const color = hslToHex(currentHue, 100, 50);
-            document.body.style.backgroundColor = color;
-
-            // Increment hue by a larger amount for faster change
-            currentHue = (currentHue + 2) % 360;
-        }
-
-        // Update color every 250ms
-        setInterval(updateBackgroundColor, 250);
-        updateBackgroundColor();
-
         const canvas = document.getElementById('drawCanvas');
         const ctx = canvas.getContext('2d');
 
